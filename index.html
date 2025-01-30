@@ -2,7 +2,11 @@
 <html>
 <head>
     <title>Home</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A homework manager to keep track of assignments and due dates.">
+    <meta name="author" content="CJ Hauser">
 </head>
 <body>
     <div class="container">
@@ -17,7 +21,7 @@
                 <input type="date" id="dueDate" name="dueDate" required>
                 <label for="notifyTime">Notify Time:</label>
                 <input type="time" id="notifyTime" name="notifyTime" required>
-                <button type="submit">Add Homework</button>
+                <button type="submit" class="myButton">Add Homework</button>
             </form>
             <ul id="homeworkList"></ul>
         </div>
