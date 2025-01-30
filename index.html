@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Home Page</h2>
+        </div>
+        <div class="content">
+            <form id="homeworkForm">
+            <label for="homework">Homework:</label>
+            <input type="text" id="homework" name="homework" required>
+            <label for="dueDate">Due Date:</label>
+            <input type="date" id="dueDate" name="dueDate" required>
+            <button type="submit">Add Homework</button>
+            </form>
+            <ul id="homeworkList"></ul>
+        </div>
+        <script>
+            // Request permission for notifications
+            if (Notification.permission !== 'granted') {
+                Notification.requestPermission();
+            }
+
+            const homeworkList = [];
+
+            document.getElementById('homeworkForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const homework = document.getElementById('homework').value;
+                const dueDate = document.getElementById('dueDate').value;
+                const li = document.createElement('li');
+                li.textContent = `${homework} - Due: ${dueDate}`;
+                document.getElementById('homeworkList').appendChild(li);
+                document.getElementById('homeworkForm').reset();
+
+                // Add homework to the list
+                homeworkList.push({ homework, dueDate });
+            });
+
+            // Check the time every minute
+            setInterval(() => {
+                const now = new Date();
+                if (now.getHours() === 18 && now.getMinutes() === 31) {
+                    homeworkList.forEach(item => {
+                        if (Notification.permission === 'granted') {
+                            new Notification('Homework Reminder', {
+                                body: `${item.homework} - Due: ${item.dueDate}`
+                            });
+                        }
+                    });
+                }
+            }, 60000); // Check every minute
+        </script>
+    </div>
+</body>
+</html>
