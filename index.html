@@ -54,12 +54,22 @@
                 homeworkList.push({ homework, dueDate, notifyTime });
             });
 
+            // Convert time to 12-hour format
+            function convertTo12HourFormat(time) {
+                const [hours, minutes] = time.split(':');
+                const period = hours >= 12 ? 'PM' : 'AM';
+                const adjustedHours = hours % 12 || 12;
+                return `${adjustedHours}:${minutes} ${period}`;
+            }
+
             // Check the time every minute
             setInterval(() => {
                 const now = new Date();
-                const currentTime = now.toTimeString().slice(0, 5);
+                const currentHours = now.getHours();
+                const currentMinutes = now.getMinutes();
+                const currentTime = `${currentHours % 12 || 12}:${currentMinutes < 10 ? '0' + currentMinutes : currentMinutes} ${currentHours >= 12 ? 'PM' : 'AM'}`;
                 homeworkList.forEach(item => {
-                    if (item.notifyTime === currentTime && Notification.permission === 'granted') {
+                    if (convertTo12HourFormat(item.notifyTime) === currentTime && Notification.permission === 'granted') {
                         new Notification('Homework Reminder', {
                             body: `${item.homework} - Due: ${item.dueDate}`
                         });
